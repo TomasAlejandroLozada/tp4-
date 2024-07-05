@@ -1,0 +1,81 @@
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include <ctime>
+
+class CPassword {
+private:
+    int longitud;
+    std::string contrasena;
+
+public:
+    CPassword() : longitud(8) {
+        generarPassword();
+    }
+
+    CPassword(int longi) : longitud(longi) {
+        generarPassword();
+    }
+
+    bool esFuerte() const {
+        int mayusculas = 0, minusculas = 0, numeros = 0;
+
+        for (char c : contrasena) {
+            if (isupper(c)) {
+                mayusculas++;
+            } else if (islower(c)) {
+                minusculas++;
+            } else if (isdigit(c)) {
+                numeros++;
+            }
+        }
+
+        return mayusculas > 2 && minusculas > 1 && numeros > 5;
+    }
+
+    void generarPassword() {
+        static const char caracteres[] =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            "abcdefghijklmnopqrstuvwxyz"
+            "0123456789";
+        const int numCaracteres = sizeof(caracteres) - 1;
+
+        contrasena.clear();
+        for (int i = 0; i < longitud; ++i) {
+            contrasena += caracteres[rand() % numCaracteres];
+        }
+    }
+
+    // Métodos get para contraseña y longitud
+    std::string getContrasena() const {
+        return contrasena;
+    }
+
+    int getLongitud() const {
+        return longitud;
+    }
+
+    void setLongitud(int longi) {
+        longitud = longi;
+        generarPassword();
+    }
+};
+
+int main() {
+    srand(static_cast<unsigned int>(time(0))); // Inicializar la semilla para generar números aleatorios
+
+    CPassword passwordDefecto;
+    std::cout << "Contraseña por defecto: " << passwordDefecto.getContrasena() << std::endl;
+    std::cout << "¿Es fuerte? " << (passwordDefecto.esFuerte() ? "Sí" : "No") << std::endl;
+
+    CPassword passwordPersonalizada(12);
+    std::cout << "Contraseña personalizada: " << passwordPersonalizada.getContrasena() << std::endl;
+    std::cout << "¿Es fuerte? " << (passwordPersonalizada.esFuerte() ? "Sí" : "No") << std::endl;
+
+
+    passwordPersonalizada.setLongitud(16);
+    std::cout << "Nueva contraseña personalizada: " << passwordPersonalizada.getContrasena() << std::endl;
+    std::cout << "¿Es fuerte? " << (passwordPersonalizada.esFuerte() ? "Sí" : "No") << std::endl;
+
+    return 0;
+}
