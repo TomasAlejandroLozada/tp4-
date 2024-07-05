@@ -1,0 +1,33 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+struct Alumno {
+    std::string nombre;
+    int finesDeSemana;
+    bool sirve;
+};
+
+int main() {
+    // Datos de ejemplo
+    std::vector<Alumno> alumnos = {
+        {"Juan", 4, false},
+        {"Maria", 6, true},
+        {"Luis", 2, false},
+        {"Ana", 5, true},
+        {"Pedro", 3, true}
+    };
+
+    // Filtrar y mostrar alumnos que respondieron NO o tienen menos de 5 fines de semana perdidos
+    std::cout << "Listado de alumnos que respondieron NO o tienen menos de 5 fines de semana perdidos:" << std::endl;
+    for (const auto& alumno : alumnos) {
+        if (!alumno.sirve || alumno.finesDeSemana < 5) {
+            std::cout << "Nombre: " << alumno.nombre 
+                      << ", Fines de Semana: " << alumno.finesDeSemana 
+                      << ", Sirve: " << (alumno.sirve ? "Si" : "No") 
+                      << std::endl;
+        }
+    }
+
+    return 0;
+}
